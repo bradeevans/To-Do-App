@@ -1,0 +1,365 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --font: 'Inter', system-ui, sans-serif;
+}
+
+body {
+  font-family: var(--font);
+  background: linear-gradient(145deg, #0d3b5e 0%, #1a6b5a 45%, #154e7a 100%);
+  min-height: 100vh;
+  color: #1a1a1a;
+}
+
+/* =====================
+   APP SHELL
+   ===================== */
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* =====================
+   ADD TASK BAR
+   ===================== */
+
+.add-task-bar {
+  background: rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.13);
+  padding: 14px 24px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+}
+
+.add-task-form {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 760px;
+}
+
+.add-task-fields {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.add-task-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.add-task-input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid rgba(255, 255, 255, 0.28);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.13);
+  color: #fff;
+  font-family: var(--font);
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+.add-task-input::placeholder { color: rgba(255, 255, 255, 0.45); }
+.add-task-input:focus {
+  border-color: rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.add-task-select {
+  padding: 10px 12px;
+  border: 1.5px solid rgba(255, 255, 255, 0.28);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.13);
+  color: #fff;
+  font-family: var(--font);
+  font-size: 14px;
+  cursor: pointer;
+  outline: none;
+  transition: background 0.2s;
+  width: 100%;
+}
+.add-task-select:focus { border-color: rgba(255, 255, 255, 0.6); }
+.add-task-select option { background: #1a4a6a; color: #fff; }
+
+.add-task-btn {
+  padding: 10px 22px;
+  background: #22b57a;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-family: var(--font);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s, transform 0.1s;
+  width: 100%;
+}
+.add-task-btn:hover { background: #1da36e; }
+.add-task-btn:active { transform: scale(0.97); }
+
+.add-task-desc {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid rgba(255, 255, 255, 0.28);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.13);
+  color: #fff;
+  font-family: var(--font);
+  font-size: 14px;
+  resize: vertical;
+  outline: none;
+}
+.add-task-desc::placeholder { color: rgba(255, 255, 255, 0.45); }
+.add-task-desc:focus { border-color: rgba(255, 255, 255, 0.65); }
+
+/* =====================
+   BOARD
+   ===================== */
+
+.board {
+  display: flex;
+  gap: 18px;
+  padding: 24px 20px 32px;
+  flex: 1;
+  align-items: flex-start;
+  overflow-x: auto;
+}
+
+/* =====================
+   COLUMN
+   ===================== */
+
+.column {
+  flex: 1;
+  min-width: 210px;
+  max-width: 340px;
+  background: rgba(255, 255, 255, 0.09);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  min-height: 420px;
+  transition: background 0.18s, border-color 0.18s;
+}
+.column--over {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.42);
+}
+
+/* Accent top-border per column */
+.column[data-col="today"]     { border-top: 3px solid #3dd6b5; }
+.column[data-col="this-week"] { border-top: 3px solid #4aa8e8; }
+.column[data-col="later"]     { border-top: 3px solid #7b8fe8; }
+.column[data-col="done"]      { border-top: 3px solid #5ec97e; }
+
+.column-header {
+  padding: 14px 16px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.column-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.clear-done-btn {
+  padding: 4px 10px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.8);
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+.clear-done-btn:hover { background: rgba(255, 255, 255, 0.22); }
+
+.column-body {
+  padding: 14px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex: 1;
+}
+
+.column-empty {
+  color: rgba(255, 255, 255, 0.25);
+  font-size: 13px;
+  text-align: center;
+  padding: 24px 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* =====================
+   TASK CARD (GLASS)
+   ===================== */
+
+.task-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 12px;
+  padding: 12px 14px;
+  position: relative;
+  will-change: transform;
+  transition: background 0.2s ease, box-shadow 0.2s ease, opacity 0.15s ease;
+}
+.task-card:hover {
+  background: rgba(255, 255, 255, 0.17);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.task-card--done .task-title {
+  text-decoration: line-through;
+  color: rgba(255, 255, 255, 0.45);
+}
+.task-card--done .task-desc {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.task-drag-handle {
+  display: flex;
+  justify-content: center;
+  padding: 0 0 7px;
+  cursor: grab;
+  color: rgba(255, 255, 255, 0.22);
+  font-size: 15px;
+  letter-spacing: 3px;
+  user-select: none;
+  touch-action: none;
+  line-height: 1;
+}
+.task-drag-handle:hover { color: rgba(255, 255, 255, 0.5); }
+.task-drag-handle:active { cursor: grabbing; }
+
+.task-delete {
+  position: absolute;
+  top: 8px;
+  right: 9px;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 17px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 4px;
+  opacity: 0;
+  transition: opacity 0.15s, color 0.15s, background 0.15s;
+}
+.task-card:hover .task-delete { opacity: 1; }
+.task-delete:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.task-title {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.92);
+  line-height: 1.45;
+  cursor: text;
+  word-break: break-word;
+  padding-right: 18px;
+  transition: color 0.2s, text-decoration 0.2s;
+}
+.task-title:hover { color: #fff; text-decoration: underline dotted rgba(255,255,255,0.4); }
+
+.task-desc {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.55);
+  margin-top: 7px;
+  line-height: 1.5;
+  cursor: text;
+  word-break: break-word;
+}
+.task-desc--empty {
+  color: rgba(255, 255, 255, 0.25);
+  font-style: italic;
+}
+.task-desc:hover { color: rgba(255, 255, 255, 0.8); text-decoration: underline dotted rgba(255,255,255,0.3); }
+
+/* Shared edit field styles */
+.task-field-edit {
+  width: 100%;
+  font-family: var(--font);
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 5px;
+  padding: 4px 6px;
+  outline: none;
+  display: block;
+}
+.task-title-edit {
+  font-size: 13.5px;
+  font-weight: 600;
+  padding-right: 20px;
+}
+.task-desc-edit {
+  font-size: 12px;
+  margin-top: 7px;
+  resize: none;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* =====================
+   DRAG OVERLAY CARD
+   ===================== */
+
+.drag-overlay-card {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  padding: 12px 14px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+  transform: scale(1.04) rotate(1.5deg);
+  cursor: grabbing;
+  min-width: 160px;
+  pointer-events: none;
+}
+.drag-overlay-card .task-title {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.45;
+  word-break: break-word;
+}
+.drag-overlay-card .task-desc {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: 7px;
+  line-height: 1.5;
+}
