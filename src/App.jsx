@@ -10,6 +10,8 @@ import {
 import { arrayMove } from '@dnd-kit/sortable'
 import AddTaskBar from './components/AddTaskBar'
 import Column from './components/Column'
+import BackupStatus from './components/BackupStatus'
+import useAutoBackup from './hooks/useAutoBackup'
 
 const COLUMN_IDS = ['today', 'this-week', 'later', 'done']
 const COLUMN_LABELS = {
@@ -33,6 +35,7 @@ function loadTasks() {
 export default function App() {
   const [tasks, setTasks] = useState(loadTasks)
   const [activeTask, setActiveTask] = useState(null)
+  const backup = useAutoBackup(tasks)
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks))
@@ -143,6 +146,11 @@ export default function App() {
             />
           ))}
         </div>
+        <BackupStatus
+          isSupported={backup.isSupported}
+          lastBackupTime={backup.lastBackupTime}
+          setFolder={backup.setFolder}
+        />
         <DragOverlay dropAnimation={{ duration: 180, easing: 'ease' }}>
           {activeTask ? (
             <div className="task-card drag-overlay-card">

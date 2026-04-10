@@ -364,3 +364,16 @@ body {
   margin-top: 7px;
   line-height: 1.5;
 }
+
+/* BACKUP STATUS */
+.backup-status {
+  position: fixed;
+  bottom: 14px;
+  right: 18px;
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.55);
+  cursor: pointer;
+  user-select: none;
+}
