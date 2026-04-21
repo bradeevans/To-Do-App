@@ -139,6 +139,7 @@ body {
   padding: 24px 20px 32px;
   flex: 1;
   align-items: flex-start;
+  justify-content: center;
   overflow-x: auto;
 }
 
